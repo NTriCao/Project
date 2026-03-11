@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sóc Trăng Du Lịch</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+:root {
+  --green:#2E7D52; --green-light:#E8F5EE;
+  --orange:#E8630A; --orange-light:#FFF0E6;
+  --dark:#1A1A1A; --gray:#666; --gray-light:#F7F7F5;
+  --white:#fff; --border:#E8E8E4;
+}
+body { font-family:'Be Vietnam Pro',sans-serif; color:var(--dark); background:var(--white); min-height:100vh; }
+
+/* NAV */
+nav {
+  position:sticky; top:0; z-index:99;
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px;
+}
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer; }
+.logo-icon { width:36px; height:36px; background:var(--green); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.logo-text { font-weight:800; font-size:17px; color:var(--dark); }
+.logo-text span { color:var(--green); }
+.nav-links { display:flex; gap:4px; }
+.nav-links button {
+  padding:8px 16px; border-radius:8px; border:none; background:transparent;
+  font-size:14px; font-weight:500; color:var(--gray); cursor:pointer;
+  font-family:'Be Vietnam Pro',sans-serif; transition:all 0.2s;
+}
+.nav-links button:hover { background:var(--gray-light); color:var(--dark); }
+.nav-links button.active { background:var(--green-light); color:var(--green); font-weight:700; }
+
+/* PAGES */
+.page { display:none; animation:fadeIn 0.4s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* HERO */
+.hero {
+  background-image: url("background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding:80px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+}
+.hero *{
+  position:relative;
+  z-index:1;
+}
+
+.hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23fff' fill-opacity='0.05'/%3E%3C/svg%3E"); }
+.hero-badge { display:inline-block; background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.9); padding:6px 16px; border-radius:20px; font-size:13px; font-weight:500; margin-bottom:24px; position:relative; }
+.hero h1 { font-family:'Merriweather',serif; font-size:clamp(40px,7vw,80px); color:#fff; line-height:1.1; margin-bottom:16px; position:relative; }
+.hero h1 em { font-style:italic; color:#FFD580; }
+.hero p { font-size:17px; color:rgba(255,255,255,0.8); max-width:520px; margin:0 auto 36px; line-height:1.7; position:relative; }
+.hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; }
+.btn { padding:13px 28px; border-radius:10px; font-size:14px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; border:none; cursor:pointer; font-family:'Be Vietnam Pro',sans-serif; }
+.btn-white { background:#fff; color:var(--green); }
+.btn-white:hover { background:#f0f0f0; transform:translateY(-1px); }
+.btn-outline { background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.5); }
+.btn-outline:hover { background:rgba(255,255,255,0.1); }
+.btn-green { background:var(--green); color:#fff; box-shadow:0 4px 16px rgba(46,125,82,0.3); }
+.btn-green:hover { background:#236040; transform:translateY(-1px); }
+.hero-stats { display:flex; justify-content:center; gap:48px; margin-top:56px; padding-top:40px; border-top:1px solid rgba(255,255,255,0.15); flex-wrap:wrap; position:relative; }
+.stat { text-align:center; }
+.stat-n { font-size:28px; font-weight:800; color:#FFD580; }
+.stat-l { font-size:12px; color:rgba(255,255,255,0.65); margin-top:2px; }
+
+/* COMMON */
+.section { padding:64px 40px; }
+.section-alt { background:var(--gray-light); }
+.container { max-width:1100px; margin:0 auto; }
+.section-header { margin-bottom:40px; }
+.section-header h2 { font-family:'Merriweather',serif; font-size:clamp(24px,4vw,36px); margin-bottom:10px; }
+.section-header h2 em { color:var(--green); font-style:italic; }
+.section-header p { font-size:15px; color:var(--gray); line-height:1.7; max-width:560px; }
+.map-place-card { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--white); border:1px solid var(--border); border-radius:12px; text-decoration:none; color:var(--dark); transition:all 0.2s; }
+.map-place-card:hover { border-color:var(--green); box-shadow:0 4px 16px rgba(46,125,82,0.12); transform:translateY(-2px); }
+.tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--green); background:var(--green-light); padding:4px 10px; border-radius:4px; margin-bottom:12px; }
+
+/* PAGE: INTRO */
+.intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.intro-text h2 { font-family:'Merriweather',serif; font-size:clamp(26px,4vw,40px); line-height:1.25; margin-bottom:20px; }
+.intro-text h2 em { color:var(--green); font-style:italic; }
+.intro-text p { font-size:15px; color:var(--gray); line-height:1.85; margin-bottom:16px; }
+.intro-highlights { display:flex; flex-direction:column; gap:12px; margin-top:28px; }
+.intro-highlight { display:flex; align-items:flex-start; gap:14px; padding:14px 16px; border-radius:12px; background:var(--gray-light); }
+.ih-icon { font-size:22px; flex-shrink:0; }
+.ih-title { font-size:14px; font-weight:700; margin-bottom:3px; }
+.ih-desc { font-size:13px; color:var(--gray); line-height:1.5; }
+.intro-card { background:linear-gradient(160deg,#1B4D35,#2E7D52 60%,#3DA066); border-radius:20px; padding:40px; color:#fff; display:flex; flex-direction:column; gap:20px; }
+.intro-card-title { font-family:'Merriweather',serif; font-size:20px; font-weight:700; margin-bottom:8px; }
+.intro-card-desc { font-size:14px; opacity:0.85; line-height:1.75; }
+.intro-facts { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.intro-fact { background:rgba(255,255,255,0.12); border-radius:12px; padding:16px; }
+.if-num { font-size:26px; font-weight:800; color:#FFD580; }
+.if-label { font-size:12px; opacity:0.75; margin-top:2px; line-height:1.4; }
+.intro-nav-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px; }
+.intro-nav-card {
+  border:1px solid var(--border); border-radius:16px; padding:24px;
+  text-align:center; cursor:pointer; transition:all 0.25s; background:var(--white);
+}
+.intro-nav-card:hover { border-color:var(--green); box-shadow:0 8px 28px rgba(46,125,82,0.12); transform:translateY(-3px); }
+.inc-icon { font-size:40px; margin-bottom:12px; }
+.inc-title { font-size:15px; font-weight:700; margin-bottom:6px; }
+.inc-desc { font-size:13px; color:var(--gray); line-height:1.55; }
+.inc-arrow { font-size:12px; color:var(--green); font-weight:700; margin-top:10px; }
+
+/* PAGE: DESTINATIONS */
+.dest-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.dest-card { border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--white); transition:all 0.25s; cursor:pointer; }
+.dest-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.1); border-color:transparent; }
+.dest-thumb { height:160px; display:flex; align-items:center; justify-content:center; font-size:64px; position:relative; }
+.dest-thumb-badge { position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.45); color:#fff; font-size:10px; font-weight:600; padding:3px 8px; border-radius:4px; }
+.dest-body { padding:20px; }
+.dest-body h3 { font-size:16px; font-weight:700; margin-bottom:6px; }
+.dest-body p { font-size:13px; color:var(--gray); line-height:1.65; margin-bottom:14px; }
+.dest-tip { font-size:12px; color:var(--orange); font-weight:600; background:var(--orange-light); padding:7px 10px; border-radius:8px; }
+
+/* PAGE: CULTURE */
+.culture-strip { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+.culture-visual { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:12px; height:360px; }
+.cv-card { border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; font-size:36px; cursor:pointer; transition:all 0.2s; }
+.cv-card:hover { transform:scale(1.03); }
+.cv-card:first-child { grid-row:span 2; font-size:56px; }
+.cv-card span { font-size:12px; font-weight:600; text-align:center; line-height:1.4; }
+.cv-green { background:var(--green); color:#fff; }
+.cv-orange { background:var(--orange); color:#fff; }
+.cv-light { background:var(--green-light); color:var(--green); }
+.cv-orange-light { background:var(--orange-light); color:var(--orange); }
+.culture-text h2 { font-family:'Merriweather',serif; font-size:clamp(22px,3vw,32px); margin-bottom:14px; line-height:1.3; }
+.culture-text h2 em { color:var(--green); font-style:italic; }
+.culture-text > p { font-size:15px; color:var(--gray); line-height:1.8; margin-bottom:24px; }
+.culture-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+.pill { padding:8px 18px; border-radius:20px; font-size:13px; font-weight:600; background:var(--white); border:1px solid var(--border); color:var(--dark); }
+.festival-list { list-style:none; }
+.festival-item { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer; transition:all 0.2s; }
+.festival-item:hover { padding-left:8px; background:var(--green-light); border-radius:8px; }
+.fi-icon { font-size:22px; flex-shrink:0; }
+.fi-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+.fi-time { font-size:12px; color:var(--green); font-weight:500; }
+
+/* PAGE: FOOD */
+.food-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.food-card { padding:24px; border-radius:14px; background:var(--white); border:1px solid var(--border); transition:all 0.2s; cursor:pointer; }
+.food-card:hover { border-color:var(--orange); box-shadow:0 4px 20px rgba(232,99,10,0.1); transform:translateY(-2px); }
+.food-icon { font-size:40px; margin-bottom:12px; display:block; }
+.food-name { font-size:16px; font-weight:700; margin-bottom:8px; }
+.food-desc { font-size:13px; color:var(--gray); line-height:1.6; }
+
+/* PAGE: MARKET */
+.market-wrap { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.market-info h2 { font-family:'Merriweather',serif; font-size:clamp(22px,3vw,32px); margin-bottom:14px; line-height:1.3; }
+.market-info h2 em { color:var(--orange); font-style:italic; }
+.market-info > p { font-size:15px; color:var(--gray); line-height:1.8; margin-bottom:28px; }
+.time-list { list-style:none; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.time-item { display:flex; align-items:center; padding:16px 20px; gap:16px; border-bottom:1px solid var(--border); background:var(--white); }
+.time-item:last-child { border-bottom:none; }
+.time-item.hot { background:var(--orange-light); }
+.t-time { font-size:15px; font-weight:700; color:var(--orange); width:56px; flex-shrink:0; }
+.t-desc { font-size:13px; color:var(--dark); font-weight:600; }
+.t-sub { font-size:12px; color:var(--gray); margin-top:2px; }
+.market-card { background:var(--green); border-radius:16px; padding:32px; color:#fff; }
+.market-card h3 { font-size:20px; font-weight:700; margin-bottom:12px; }
+.market-card > p { font-size:14px; opacity:0.85; line-height:1.7; margin-bottom:20px; }
+.market-features { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.mf { display:flex; gap:10px; font-size:13px; opacity:0.9; align-items:flex-start; }
+.mf::before { content:'✓'; flex-shrink:0; font-weight:700; margin-top:1px; }
+
+/* PAGE: TIPS */
+.tips-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.tip-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; transition:border-color 0.2s; }
+.tip-card:hover { border-color:var(--green); }
+.tip-icon { font-size:32px; margin-bottom:14px; }
+.tip-title { font-size:15px; font-weight:700; margin-bottom:14px; }
+.tip-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.tip-list li { font-size:13px; color:var(--gray); padding-left:16px; position:relative; line-height:1.55; }
+.tip-list li::before { content:'·'; position:absolute; left:2px; color:var(--green); font-size:20px; line-height:1.1; font-weight:700; }
+
+/* MODAL */
+.modal-overlay { position:fixed; inset:0; z-index:999; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal { background:var(--white); border-radius:20px; width:100%; max-width:760px; max-height:90vh; overflow-y:auto; position:relative; transform:translateY(30px) scale(0.97); transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 32px 80px rgba(0,0,0,0.25); }
+.modal-overlay.open .modal { transform:translateY(0) scale(1); }
+.modal-hero { height:260px; display:flex; align-items:center; justify-content:center; font-size:100px; position:relative; border-radius:20px 20px 0 0; overflow:hidden; }
+.modal-hero-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 60%); }
+.modal-hero-emoji { position:relative; z-index:1; filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+.modal-close { position:absolute; top:16px; right:16px; z-index:10; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.9); border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.modal-close:hover { background:#fff; transform:scale(1.1); }
+.modal-body { padding:28px 32px 32px; }
+.modal-tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--green); background:var(--green-light); padding:4px 10px; border-radius:4px; margin-bottom:10px; }
+.modal-title { font-family:'Merriweather',serif; font-size:26px; margin-bottom:6px; line-height:1.25; }
+.modal-subtitle { font-size:13px; color:var(--gray); margin-bottom:20px; font-style:italic; }
+.modal-imgs { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.modal-img-wrap { border-radius:10px; overflow:hidden; aspect-ratio:4/3; background:var(--gray-light); }
+.modal-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.3s; display:block; }
+.modal-img-wrap:hover img { transform:scale(1.05); }
+.modal-img-ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:32px; }
+.modal-desc { font-size:14px; color:#444; line-height:1.8; margin-bottom:24px; }
+.modal-sections { display:flex; flex-direction:column; gap:16px; }
+.modal-section { background:var(--gray-light); border-radius:12px; padding:16px 20px; }
+.modal-section-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--green); margin-bottom:8px; }
+.modal-section-body { font-size:13px; color:#444; line-height:1.7; }
+.modal-tip { background:var(--orange-light); border-left:3px solid var(--orange); border-radius:0 10px 10px 0; padding:12px 16px; font-size:13px; color:var(--dark); font-weight:500; margin-top:16px; }
+
+/* MAP SECTION */
+.map-place-card {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px; border-radius:14px;
+  border:1px solid var(--border); background:var(--white);
+  text-decoration:none; color:var(--dark);
+  transition:all 0.22s; cursor:pointer;
+}
+.map-place-card:hover {
+  border-color:var(--green);
+  background:var(--green-light);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(46,125,82,0.12);
+}
+
+/* FOOTER */
+footer { background:#1C2B1C; color:rgba(255,255,255,0.65); padding:48px 40px 28px; }
+.footer-inner { max-width:1100px; margin:0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:36px; }
+.footer-brand h3 { font-size:18px; font-weight:800; color:#fff; margin-bottom:10px; }
+.footer-brand p { font-size:13px; line-height:1.7; max-width:280px; }
+.footer-links h4 { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:14px; font-weight:600; }
+.footer-links ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.footer-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:13px; transition:color 0.2s; cursor:pointer; }
+.footer-links a:hover { color:#fff; }
+.footer-bottom { max-width:1100px; margin:0 auto; padding-top:24px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.3); }
+
+
+  /* Hamburger - hidden on desktop */
+  .hamburger { display:none; }
+
+/* RESPONSIVE - TABLET */
+@media (max-width:900px) {
+  nav { padding:0 16px; height:56px; }
+  .nav-links { gap:2px; }
+  .nav-links button { padding:6px 10px; font-size:12px; }
+  .section { padding:48px 20px; }
+  .dest-grid,.food-grid { grid-template-columns:1fr 1fr; }
+  .culture-strip,.market-wrap { grid-template-columns:1fr; gap:32px; }
+  .tips-grid { grid-template-columns:1fr 1fr; }
+  .culture-visual { height:220px; }
+  .hero { padding:60px 20px; min-height:auto; }
+  .hero-stats { gap:24px; }
+  .intro-grid { grid-template-columns:1fr; gap:28px; }
+  .footer-inner { flex-direction:column; gap:28px; }
+  .footer-bottom { flex-direction:column; gap:8px; text-align:center; }
+  .modal { max-width:96vw; }
+  .modal-body { padding:20px 20px 24px; }
+  .modal-imgs { grid-template-columns:1fr 1fr; gap:8px; }
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width:600px) {
+  /* Nav: hamburger menu */
+  nav { padding:0 16px; height:56px; }
+  .nav-links {
+    position:fixed; top:56px; left:0; right:0; bottom:0;
+    background:rgba(255,255,255,0.98);
+    backdrop-filter:blur(12px);
+    flex-direction:column; gap:4px;
+    padding:16px; overflow-y:auto;
+    display:none; z-index:98;
+    border-top:1px solid var(--border);
+    box-shadow:0 8px 32px rgba(0,0,0,0.12);
+  }
+  .nav-links.open { display:flex; }
+  .nav-links button {
+    width:100%; text-align:left; padding:14px 16px;
+    font-size:15px; border-radius:10px;
+  }
+  .nav-links button.active { background:var(--green-light); }
+  .hamburger {
+    display:flex; flex-direction:column; gap:5px;
+    cursor:pointer; padding:8px; border-radius:8px;
+    background:none; border:none;
+  }
+  .hamburger span {
+    display:block; width:22px; height:2px;
+    background:var(--dark); border-radius:2px;
+    transition:all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity:0; }
+  .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+  /* Hero */
+  .hero { padding:48px 16px 40px; }
+  .hero h1 { font-size:clamp(36px,11vw,56px); }
+  .hero p { font-size:15px; margin-bottom:28px; }
+  .hero-btns { flex-direction:column; align-items:center; gap:10px; }
+  .hero-btns .btn { width:100%; max-width:280px; text-align:center; }
+  .hero-stats { gap:20px; margin-top:36px; padding-top:28px; }
+  .stat-n { font-size:22px; }
+
+  /* Sections */
+  .section { padding:40px 16px; }
+  .section-header { margin-bottom:28px; }
+  .section-header h2 { font-size:22px; }
+  .container { padding:0; }
+
+  /* Intro */
+  .intro-grid { grid-template-columns:1fr; gap:24px; }
+  .intro-card { padding:24px; }
+  .intro-facts { grid-template-columns:1fr 1fr; gap:10px; }
+  .if-num { font-size:20px; }
+  .intro-text h2 { font-size:24px; }
+  .intro-highlights { gap:10px; }
+  .intro-highlight { padding:12px; }
+
+  /* Destinations */
+  .dest-grid { grid-template-columns:1fr; gap:14px; }
+  .dest-thumb { height:140px; font-size:52px; }
+
+  /* Culture */
+  .culture-strip { grid-template-columns:1fr; gap:24px; }
+  .culture-visual { height:180px; gap:8px; }
+  .cv-card:first-child { font-size:36px; }
+  .culture-text h2 { font-size:22px; }
+  .culture-pills { gap:6px; }
+  .pill { padding:6px 14px; font-size:12px; }
+
+  /* Food */
+  .food-grid { grid-template-columns:1fr; gap:12px; }
+  .food-card { padding:18px; }
+  .food-icon { font-size:32px; margin-bottom:8px; }
+
+  /* Market */
+  .market-wrap { grid-template-columns:1fr; gap:24px; }
+  .market-card { padding:24px; }
+  .market-info h2 { font-size:22px; }
+
+  /* Tips */
+  .tips-grid { grid-template-columns:1fr; gap:12px; }
+  .tip-card { padding:18px; }
+
+  /* Footer */
+  footer { padding:36px 16px 24px; }
+  .footer-inner { flex-direction:column; gap:24px; }
+  .footer-bottom { flex-direction:column; gap:6px; text-align:center; }
+
+  /* Modal */
+  .modal { border-radius:16px; max-height:92vh; }
+  .modal-hero { height:200px; font-size:72px; }
+  .modal-body { padding:16px 16px 24px; }
+  .modal-title { font-size:20px; }
+  .modal-imgs { grid-template-columns:1fr 1fr; gap:6px; margin-bottom:14px; }
+  .modal-section { padding:12px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="goTo('home')">
+    <div class="logo-icon">🌴</div>
+    <div class="logo-text">Sóc <span>Trăng</span></div>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button onclick="goTo('home')" id="nav-home">Trang Chủ</button>
+    <button onclick="goTo('destinations')" id="nav-destinations">Điểm Đến</button>
+    <button onclick="goTo('culture')" id="nav-culture">Văn Hóa</button>
+    <button onclick="goTo('food')" id="nav-food">Ẩm Thực</button>
+    <button onclick="goTo('market')" id="nav-market">Chợ Nổi</button>
+    <button onclick="goTo('tips')" id="nav-tips">Cẩm Nang</button>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE: HOME (gộp Trang Chủ + Giới Thiệu) -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-badge">🌺 Đồng bằng sông Cửu Long</div>
+    <h1>Khám phá<br><em>Sóc Trăng</em></h1>
+    <p>Vùng đất giao thoa ba nền văn hóa Kinh – Khmer – Hoa với những ngôi chùa cổ kính, lễ hội rực rỡ và ẩm thực đặc sắc.</p>
+    <div class="hero-btns">
+      <button class="btn btn-white" onclick="goTo('destinations')">Xem Điểm Đến</button>
+      <button class="btn btn-outline" onclick="goTo('food')">Ẩm Thực Đặc Sản</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n">400+</div><div class="stat-l">Năm lịch sử</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">Dân tộc anh em</div></div>
+      <div class="stat"><div class="stat-n">26.8°</div><div class="stat-l">Nhiệt độ TB</div></div>
+      <div class="stat"><div class="stat-n">5+</div><div class="stat-l">Điểm tham quan</div></div>
+    </div>
+  </section>
+
+  <div class="section">
+    <div class="container">
+      <div class="intro-grid">
+        <div class="intro-text">
+          <div class="tag">Giới Thiệu</div>
+          <h2>Sóc Trăng —<br><em>Viên ngọc</em> miền Tây</h2>
+          <p>Sóc Trăng là tỉnh ven biển thuộc vùng Đồng bằng sông Cửu Long, nơi ba dân tộc Kinh – Khmer – Hoa cùng sinh sống hòa thuận qua hàng trăm năm lịch sử.</p>
+          <p>Nhờ sự giao thoa văn hóa độc đáo đó, Sóc Trăng sở hữu kho tàng kiến trúc chùa chiền cổ kính, lễ hội truyền thống đặc sắc và nền ẩm thực phong phú mang đậm hương vị sông nước miền Tây.</p>
+          <div class="intro-highlights">
+            <div class="intro-highlight">
+              <span class="ih-icon">🛕</span>
+              <div><div class="ih-title">Kiến trúc Khmer độc đáo</div><div class="ih-desc">Hàng chục ngôi chùa cổ kính với mái cong nhiều tầng, hoa văn rắn thần Naga và nghệ thuật trang trí tinh xảo.</div></div>
+            </div>
+            <div class="intro-highlight">
+              <span class="ih-icon">🎊</span>
+              <div><div class="ih-title">Lễ hội sôi động quanh năm</div><div class="ih-desc">Ok Om Bok, đua ghe Ngo, Tết Chol Chnam Thmay — những lễ hội mang đậm bản sắc Khmer Nam Bộ.</div></div>
+            </div>
+            <div class="intro-highlight">
+              <span class="ih-icon">🥮</span>
+              <div><div class="ih-title">Ẩm thực đặc sắc ba dân tộc</div><div class="ih-desc">Bánh pía di sản quốc gia, bún nước lèo đậm đà, lạp xưởng người Hoa — mỗi món là câu chuyện văn hóa.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="intro-card">
+          <div>
+            <div class="intro-card-title">🌴 Tổng quan Sóc Trăng</div>
+            <div class="intro-card-desc">Tỉnh ven biển thuộc Đồng bằng sông Cửu Long, cách TP.HCM khoảng 231 km. Khí hậu nhiệt đới dễ chịu, thích hợp du lịch quanh năm.</div>
+          </div>
+          <div class="intro-facts">
+            <div class="intro-fact"><div class="if-num">26.8°C</div><div class="if-label">Nhiệt độ trung bình năm</div></div>
+            <div class="intro-fact"><div class="if-num">3</div><div class="if-label">Dân tộc anh em cùng sống</div></div>
+            <div class="intro-fact"><div class="if-num">400+</div><div class="if-label">Năm lịch sử hình thành</div></div>
+            <div class="intro-fact"><div class="if-num">231km</div><div class="if-label">Cách TP. Hồ Chí Minh</div></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:16px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:8px;">📅 Thời điểm lý tưởng</div>
+            <div style="font-size:13px;opacity:0.85;line-height:1.7;">Đến bất kỳ lúc nào trong năm. Đặc biệt nên đến <strong style="color:#FFD580">tháng 10 âm lịch</strong> để tham dự lễ hội Ok Om Bok và đua ghe Ngo.</div>
+          </div>
+          <button class="btn btn-white" onclick="goTo('destinations')" style="align-self:flex-start;margin-top:4px;">Xem Điểm Tham Quan →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+</div>
+
+<!-- PAGE: DESTINATIONS -->
+<div class="page" id="page-destinations">
+
+  <!-- BẢN ĐỒ ĐẦU TRANG -->
+  <div class="section section-alt" style="padding-bottom:40px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;">
+        <div>
+          <div class="tag">Bản Đồ</div>
+          <h2 style="font-family:'Merriweather',serif;font-size:clamp(24px,4vw,34px);margin-bottom:8px;">Vị trí <em style="color:var(--green);font-style:italic;">Sóc Trăng</em></h2>
+          <p style="font-size:15px;color:var(--gray);line-height:1.7;max-width:500px;">Nằm ở vùng Đồng bằng sông Cửu Long, cách TP. Hồ Chí Minh khoảng 231 km về phía Nam.</p>
+        </div>
+        <a href="https://www.google.com/maps/place/T%E1%BB%89nh+S%C3%B3c+Tr%C4%83ng/@9.602521,105.88522,11z" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(46,125,82,0.3);transition:all 0.2s;"
+          onmouseover="this.style.background='#236040';this.style.transform='translateY(-1px)'"
+          onmouseout="this.style.background='var(--green)';this.style.transform='translateY(0)'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Mở Google Maps
+        </a>
+      </div>
+      <div style="border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.14);border:1px solid var(--border);">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125520.94905592467!2d105.7352!3d9.6025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0166a5099db41%3A0x3bfbf879bc8a2ba9!2zVMOsbmggU8OzYyBUcsSDbmc!5e0!3m2!1svi!2svn!4v1710000000000!5m2!1svi!2svn"
+          width="100%" height="460" style="border:0;display:block;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div style="margin-top:16px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;">📍 Xem nhanh trên Google Maps</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <a href="https://www.google.com/maps/search/Chùa+Dơi+Sóc+Trăng" target="_blank" rel="noopener" class="map-place-card"><span style="font-size:26px;flex-shrink:0;">🦇</span><div><div style="font-size:13px;font-weight:700;">Chùa Dơi</div><div style="font-size:12px;color:var(--green);font-weight:500;">Xem trên Maps →</div></div></a>
+          <a href="https://www.google.com/maps/search/Chùa+Chén+Kiểu+Sóc+Trăng" target="_blank" rel="noopener" class="map-place-card"><span style="font-size:26px;flex-shrink:0;">🏺</span><div><div style="font-size:13px;font-weight:700;">Chùa Chén Kiểu</div><div style="font-size:12px;color:var(--green);font-weight:500;">Xem trên Maps →</div></div></a>
+          <a href="https://www.google.com/maps/search/Chợ+Nổi+Ngã+Năm+Sóc+Trăng" target="_blank" rel="noopener" class="map-place-card"><span style="font-size:26px;flex-shrink:0;">⛵</span><div><div style="font-size:13px;font-weight:700;">Chợ Nổi Ngã Năm</div><div style="font-size:12px;color:var(--green);font-weight:500;">Xem trên Maps →</div></div></a>
+          <a href="https://www.google.com/maps/search/Chùa+Som+Rong+Sóc+Trăng" target="_blank" rel="noopener" class="map-place-card"><span style="font-size:26px;flex-shrink:0;">🛕</span><div><div style="font-size:13px;font-weight:700;">Chùa Som Rong</div><div style="font-size:12px;color:var(--green);font-weight:500;">Xem trên Maps →</div></div></a>
+          <a href="https://www.google.com/maps/search/Chùa+Phật+Học+2+Sóc+Trăng" target="_blank" rel="noopener" class="map-place-card"><span style="font-size:26px;flex-shrink:0;">🪷</span><div><div style="font-size:13px;font-weight:700;">Chùa Phật Học 2</div><div style="font-size:12px;color:var(--green);font-weight:500;">Xem trên Maps →</div></div></a>
+          <a href="https://www.google.com/maps/search/Liên+Hoa+Bảo+Tháp+Sóc+Trăng" target="_blank" rel="noopener" class="map-place-card"><span style="font-size:26px;flex-shrink:0;">🏯</span><div><div style="font-size:13px;font-weight:700;">Liên Hoa Bảo Tháp</div><div style="font-size:12px;color:var(--green);font-weight:500;">Xem trên Maps →</div></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANH SÁCH ĐỊA ĐIỂM -->
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">Điểm Tham Quan</div>
+        <h2>Những ngôi chùa <em>nổi tiếng</em></h2>
+        <p>Nhấn vào từng địa điểm để xem thông tin và hình ảnh chi tiết.</p>
+      </div>
+      <div class="dest-grid">
+        <div class="dest-card" onclick="openModal('destinations','chua-doi')">
+          <div class="dest-thumb" style="background-image:url('chua-doi1.jpg'); background-size:cover; background-position:center;"><div class="dest-thumb-badge">Di tích quốc gia</div></div>
+          <div class="dest-body"><h3>Chùa Dơi (Mahatup)</h3><p>Ngôi chùa Khmer hơn 400 năm tuổi, nơi hàng nghìn con dơi trú ngụ trên tán cổ thụ.</p><div class="dest-tip">⏰ Đến 17–18h ngắm dơi bay</div></div>
+        </div>
+        <div class="dest-card" onclick="openModal('destinations','chua-chen-kieu')">
+          <div class="dest-thumb" style="background-image:url('chua-chen-kieu1.jpg'); background-size:cover; background-position:center;"><div class="dest-thumb-badge">Xây dựng 1815</div></div>
+          <div class="dest-body"><h3>Chùa Chén Kiểu</h3><p>Tường và cột khảm hàng nghìn mảnh chén đĩa sứ thành hoa văn tinh xảo — độc nhất miền Tây.</p><div class="dest-tip">📸 Sáng sớm chụp ảnh đẹp nhất</div></div>
+        </div>
+        <div class="dest-card" onclick="openModal('destinations','phat-hoc-2')">
+          <div class="dest-thumb" style="background-image:url('chua-phat-hoc-2-1.jpg'); background-size:cover; background-position:center;"><div class="dest-thumb-badge">Diện tích 8.5 ha</div></div>
+          <div class="dest-body"><h3>Chùa Phật Học 2</h3><p>Tượng Phật Niết Bàn dài 17m, ao sen, núi nhân tạo. Miễn phí vào cửa, giữ xe và mượn nón lá.</p><div class="dest-tip">✅ Vào cửa & giữ xe miễn phí</div></div>
+        </div>
+        <div class="dest-card" onclick="openModal('destinations','som-rong')">
+          <div class="dest-thumb" style="background-image:url('chua-som-rong1.jpg'); background-size:cover; background-position:center;"><div class="dest-thumb-badge">Xây dựng 1785</div></div>
+          <div class="dest-body"><h3>Chùa Som Rong</h3><p>240 năm lịch sử, 12 đời trụ trì. Tượng Phật Niết Bàn ngoài trời dài 63m — lớn nhất khu vực.</p><div class="dest-tip">🌅 Sáng sớm yên tĩnh và đẹp</div></div>
+        </div>
+        <div class="dest-card" onclick="openModal('destinations','cho-noi')">
+          <div class="dest-thumb" style="background-image:url('cho-noi-nga-5-3.jpg'); background-size:cover; background-position:center;"><div class="dest-thumb-badge">Họp từ 4h sáng</div></div>
+          <div class="dest-body"><h3>Chợ Nổi Ngã Năm</h3><p>Giao điểm 5 nhánh sông, sôi động nhất 5–6h sáng. Dịp Tết có đến 400 ghe xuồng.</p><div class="dest-tip">⏰ Phải đến trước 6h sáng</div></div>
+        </div>
+        <div class="dest-card" onclick="openModal('destinations','lien-hoa')">
+          <div class="dest-thumb" style="background-image:url('tan-hue-vien1.jpg'); background-size:cover; background-position:center;"><div class="dest-thumb-badge">Mới 28/01/2026</div></div>
+          <div class="dest-body"><h3>Liên Hoa Bảo Tháp</h3><p>Tháp hoa sen 3 tầng cao 68m vừa khánh thành. Tượng Phật dát vàng. Đẹp lung linh vào buổi tối.</p><div class="dest-tip">✨ Điểm mới hot nhất 2026</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PAGE: CULTURE -->
+<div class="page" id="page-culture">
+  <div class="section">
+    <div class="container">
+      <div class="culture-strip">
+        <div class="culture-visual">
+          <div class="cv-card cv-green" onclick="openModal('culture','ok-om-bok')">🌕<span>Ok Om Bok</span></div>
+          <div class="cv-card cv-orange" onclick="openModal('culture','dua-ghe-ngo')">🚣<span>Đua Ghe Ngo</span></div>
+          <div class="cv-card cv-light" onclick="openModal('culture','chol-chnam-thmay')">🎊<span>Chol Chnam Thmay</span></div>
+          <div class="cv-card cv-orange-light" onclick="openModal('culture','van-hoa-hoa')">🏮<span>Văn Hóa Hoa</span></div>
+        </div>
+        <div class="culture-text">
+          <div class="tag">Văn Hóa</div>
+          <h2>Giao thoa <em>ba dân tộc</em></h2>
+          <p>Sóc Trăng là nơi văn hóa Kinh – Khmer – Hoa cùng tồn tại, tạo nên bản sắc độc đáo qua kiến trúc chùa chiền, lễ hội và ẩm thực.</p>
+          <div class="culture-pills">
+            <span class="pill">Dân Tộc Kinh</span>
+            <span class="pill">Dân Tộc Khmer</span>
+            <span class="pill">Dân Tộc Hoa</span>
+          </div>
+          <p style="font-size:13px;color:var(--gray);margin-bottom:12px;font-weight:600;">Nhấn vào lễ hội để xem chi tiết:</p>
+          <ul class="festival-list">
+            <li class="festival-item" onclick="openModal('culture','ok-om-bok')">
+              <span class="fi-icon">🌕</span>
+              <div><div class="fi-name">Lễ Hội Ok Om Bok</div><div class="fi-time">Tháng 10 âm lịch — Cúng trăng truyền thống Khmer</div></div>
+            </li>
+            <li class="festival-item" onclick="openModal('culture','dua-ghe-ngo')">
+              <span class="fi-icon">🚣</span>
+              <div><div class="fi-name">Đua Ghe Ngo</div><div class="fi-time">Tháng 10 âm lịch — Đua thuyền trên sông Maspero</div></div>
+            </li>
+            <li class="festival-item" onclick="openModal('culture','chol-chnam-thmay')">
+              <span class="fi-icon">🎊</span>
+              <div><div class="fi-name">Tết Chol Chnam Thmay</div><div class="fi-time">Tháng 4 dương lịch — Năm mới của người Khmer</div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: FOOD -->
+<div class="page" id="page-food">
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">Ẩm Thực</div>
+        <h2>Đặc sản <em>không thể bỏ lỡ</em></h2>
+        <p>Nhấn vào từng món để xem thông tin, cách thưởng thức và nơi mua ngon nhất.</p>
+      </div>
+      <div class="food-grid">
+        <div class="food-card" onclick="openModal('food','banh-pia')"><span class="food-icon">🥮</span><div class="food-name">Bánh Pía</div><div class="food-desc">Di sản văn hóa phi vật thể quốc gia. Thương hiệu Tân Huê Viên nổi tiếng từ năm 1985.</div></div>
+        <div class="food-card" onclick="openModal('food','bun-nuoc-leo')"><span class="food-icon">🍜</span><div class="food-name">Bún Nước Lèo</div><div class="food-desc">Nước dùng mắm cá lóc đậm đà. Tinh hoa ẩm thực Khmer–Kinh không nơi nào sánh được.</div></div>
+        <div class="food-card" onclick="openModal('food','lap-xuong')"><span class="food-icon">🌭</span><div class="food-name">Lạp Xưởng</div><div class="food-desc">Màu đỏ thơm theo công thức người Hoa truyền thống. Đặc sản được nhiều du khách mua về.</div></div>
+        <div class="food-card" onclick="openModal('food','banh-cong')"><span class="food-icon">🧆</span><div class="food-name">Bánh Cống</div><div class="food-desc">Chiên giòn rụm nhân tôm thịt, ăn với rau sống và nước chấm chua ngọt. Món đường phố đặc trưng.</div></div>
+        <div class="food-card" onclick="openModal('food','bun-goi-da')"><span class="food-icon">🥗</span><div class="food-name">Bún Gỏi Dà</div><div class="food-desc">Bún kết hợp rau sống, tôm thịt và nước chấm chua ngọt độc đáo. Tươi mát, nhẹ bụng.</div></div>
+        <div class="food-card" onclick="openModal('food','so-ri')"><span class="food-icon">🍒</span><div class="food-name">Trái Sơ Ri</div><div class="food-desc">Trái đỏ nhỏ vị chua ngọt, giàu vitamin C. Bán nhiều ven đường gần Chùa Dơi.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: MARKET -->
+<div class="page" id="page-market">
+  <div class="section">
+    <div class="container">
+      <div class="market-wrap">
+        <div>
+          <div class="tag">Chợ Nổi</div>
+          <div class="market-info">
+            <h2>Ngã Năm —<br><em>5 dòng sông</em> gặp nhau</h2>
+            <p>Trung tâm giao thương sông nước từ thời Pháp thuộc. Ghe treo hàng trên cây sào — nét văn hóa miền Tây độc nhất vô nhị.</p>
+          </div>
+          <ul class="time-list">
+            <li class="time-item"><div class="t-time">4–5h</div><div><div class="t-desc">Ghe bắt đầu tụ họp</div><div class="t-sub">Chợ dần nhộn nhịp</div></div></li>
+            <li class="time-item hot"><div class="t-time">5–6h</div><div><div class="t-desc">⭐ Đông và sôi động nhất</div><div class="t-sub">Thời điểm lý tưởng để tham quan</div></div></li>
+            <li class="time-item"><div class="t-time">7–9h</div><div><div class="t-desc">Chợ thưa dần</div><div class="t-sub">Buôn bán giảm sau 9h sáng</div></div></li>
+            <li class="time-item"><div class="t-time">Tết</div><div><div class="t-desc">400+ ghe xuồng</div><div class="t-sub">Nhộn nhịp nhất dịp Tết Nguyên Đán</div></div></li>
+          </ul>
+        </div>
+        <div class="market-card">
+          <span style="font-size:52px;display:block;margin-bottom:16px">⛵</span>
+          <h3>Trải nghiệm văn hóa sông nước</h3>
+          <p>Ăn sáng trên ghe với bún nước lèo, hủ tiếu, cà phê. Không khí bình dị, chân thực của người dân miền Tây.</p>
+          <ul class="market-features">
+            <li class="mf">Ghe treo hàng trên cây sào — cách bán truyền thống</li>
+            <li class="mf">Nông sản tươi từ khắp vùng đồng bằng</li>
+            <li class="mf">Ăn sáng trên ghe: bún, hủ tiếu, cơm tấm, cà phê</li>
+            <li class="mf">Hình thành từ thời kênh đào Quản Lộ – Phụng Hiệp</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: TIPS -->
+<div class="page" id="page-tips">
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">Cẩm Nang</div>
+        <h2>Mẹo cho <em>chuyến đi hoàn hảo</em></h2>
+        <p>Những điều cần biết để có trải nghiệm tốt nhất khi đến Sóc Trăng.</p>
+      </div>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">🌤️</div>
+          <div class="tip-title">Thời Điểm Đi</div>
+          <ul class="tip-list">
+            <li>Nhiệt độ 26.8°C, đi được quanh năm</li>
+            <li>Tháng 10 âm lịch: Ok Om Bok & đua ghe Ngo</li>
+            <li>Tết Nguyên Đán: chợ nổi đông nhất</li>
+            <li>Mùa khô (tháng 12–4): di chuyển dễ nhất</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📍</div>
+          <div class="tip-title">Giờ Tham Quan</div>
+          <ul class="tip-list">
+            <li>Chùa Dơi: 17–18h ngắm dơi bay</li>
+            <li>Chợ Nổi Ngã Năm: đến trước 6h sáng</li>
+            <li>Liên Hoa Bảo Tháp: buổi tối đẹp nhất</li>
+            <li>Chùa Som Rong: sáng sớm yên tĩnh</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🛍️</div>
+          <div class="tip-title">Đặc Sản Mua Về</div>
+          <ul class="tip-list">
+            <li>Bánh pía Tân Huê Viên — số 1</li>
+            <li>Lạp xưởng Sóc Trăng thơm ngon</li>
+            <li>Trái sơ ri đỏ gần Chùa Dơi</li>
+            <li>Bánh cống nóng giòn gần Chùa Som Rong</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">💡</div>
+          <div class="tip-title">Lưu Ý</div>
+          <ul class="tip-list">
+            <li>Mặc trang phục kín đáo khi vào chùa</li>
+            <li>Chùa Phật Học 2 miễn phí giữ xe & nón lá</li>
+            <li>Mang tiền mặt khi đi chợ nổi sáng sớm</li>
+            <li>Tôn trọng không gian tâm linh</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER (shown on all pages) -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>🌴 Sóc Trăng Du Lịch</h3>
+      <p>Vùng đất giao thoa Kinh – Khmer – Hoa với bản sắc văn hóa độc đáo tại Đồng bằng sông Cửu Long.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Điểm Tham Quan</h4>
+      <ul>
+        <li><a onclick="goTo('destinations')">Chùa Dơi</a></li>
+        <li><a onclick="goTo('destinations')">Chùa Chén Kiểu</a></li>
+        <li><a onclick="goTo('destinations')">Chùa Phật Học 2</a></li>
+        <li><a onclick="goTo('destinations')">Chùa Som Rong</a></li>
+        <li><a onclick="goTo('market')">Chợ Nổi Ngã Năm</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Khám Phá</h4>
+      <ul>
+        <li><a onclick="goTo('culture')">Văn Hóa & Lễ Hội</a></li>
+        <li><a onclick="goTo('food')">Ẩm Thực Đặc Sản</a></li>
+        <li><a onclick="goTo('tips')">Cẩm Nang Du Lịch</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Sóc Trăng Du Lịch</span>
+    <span>🌡️ 26.8°C · Thời tiết dễ chịu quanh năm</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBg(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-hero" id="modalHero">
+      <span class="modal-hero-emoji" id="modalEmoji"></span>
+      <div class="modal-hero-overlay"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tag" id="modalTag"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-subtitle" id="modalSubtitle"></div>
+      <div class="modal-imgs" id="modalImgs"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-sections" id="modalSections"></div>
+      <div class="modal-tip" id="modalTip"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── NAVIGATION ───────────────────────────────────────
+function toggleMenu() {
+  const nav = document.getElementById('navLinks');
+  const btn = document.getElementById('hamburger');
+  nav.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  const pageEl = document.getElementById('page-' + page);
+  const navEl = document.getElementById('nav-' + page);
+  if (pageEl) pageEl.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  closeMenu();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+// Set home as default active nav
+document.getElementById('nav-home').classList.add('active');
+
+// ─── MODAL DATA ───────────────────────────────────────
+const data = {
+  destinations: [
+    { id:'chua-doi', tag:'Di Tích Quốc Gia', title:'Chùa Dơi (Mahatup)', subtitle:'Xây dựng năm 1569 · Hơn 400 năm lịch sử', bg:'url("chua-doi1.jpg") center/cover no-repeat',
+      imgs:['chua-doi2.mp4','chua-doi3.jpg'],
+      desc:'Chùa Dơi là ngôi chùa Khmer nổi tiếng nhất Sóc Trăng, có lịch sử hơn 400 năm từ năm 1569. Được công nhận di tích lịch sử – văn hóa cấp quốc gia năm 1999.',
+      sections:[
+        {title:'🏛️ Kiến trúc',body:'Mái chùa cong nhiều tầng đặc trưng Khmer Nam Bộ, trang trí họa tiết rắn thần Naga. Bên trong có nhiều tượng Phật và tranh vẽ về cuộc đời Đức Phật.'},
+        {title:'🦇 Điểm đặc biệt',body:'Khuôn viên có hàng chục cây cổ thụ hàng trăm năm tuổi, là nơi trú ngụ của hàng nghìn con dơi — lý do người dân gọi là Chùa Dơi.'},
+        {title:'🍒 Đặc sản gần chùa',body:'Trái sơ ri — trái nhỏ đỏ, vị chua ngọt, giàu vitamin C. Bán nhiều ven đường quanh chùa, mua về làm quà rất ý nghĩa.'},
+      ], tip:'⏰ Đến lúc 17–18h chiều khi đàn dơi bay ra khỏi chùa — cảnh tượng ấn tượng không thể quên!' },
+    { id:'chua-chen-kieu', tag:'Kiến Trúc Độc Đáo', title:'Chùa Chén Kiểu (Sà Lôn)', subtitle:'Xây dựng năm 1815 · Độc nhất miền Tây', bg:'url("chua-chen-kieu1.jpg") center/cover no-repeat',
+      imgs:['chua-chen-kieu2.mp4','chua-chen-kieu3.jpg'],
+      desc:'Chùa Chén Kiểu (Sà Lôn) xây dựng khoảng năm 1815, nổi tiếng với tường và cột khảm hàng nghìn mảnh chén đĩa sứ ghép thành hoa văn tinh xảo — độc nhất vô nhị.',
+      sections:[
+        {title:'🏛️ Kiến trúc',body:'Toàn bộ tường, cột được khảm mảnh chén đĩa bát sứ tạo hoa văn lấp lánh. Kiến trúc Khmer mái cong nhiều tầng, nhiều tượng Phật. Khuôn viên rộng và yên tĩnh.'},
+        {title:'🎨 Nghệ thuật khảm',body:'Đây là kỹ thuật trang trí độc đáo, không nơi nào ở miền Tây có được. Các mảnh sứ được xếp khéo léo tạo thành hoa văn hình học đẹp mắt và tinh xảo.'},
+        {title:'🥮 Đặc sản gần chùa',body:'Bánh pía Sóc Trăng — di sản văn hóa phi vật thể quốc gia, với thương hiệu Tân Huê Viên nổi tiếng. Nhớ mua khi tham quan vùng này.'},
+      ], tip:'📸 Sáng sớm hoặc chiều muộn ánh sáng đẹp nhất để chụp ảnh các hoa văn chén sứ lấp lánh.' },
+    { id:'phat-hoc-2', tag:'Khu Tâm Linh Hiện Đại', title:'Chùa Phật Học 2', subtitle:'Xây dựng 2011 · Diện tích 8.5 ha', bg:'url("chua-phat-hoc-2-1.jpg") center/cover no-repeat',
+      imgs:['chua-phat-hoc-2-2.mp4','chua-phat-hoc-2-3.jpg'],
+      desc:'Chùa Phật Học 2 (Quan Âm Linh Ứng) là khu tâm linh rộng 8,5 ha xây dựng năm 2011. Nổi tiếng với Tượng Phật Nhập Niết Bàn dài 17m và các hoạt động từ thiện tích cực.',
+      sections:[
+        {title:'🗿 Công trình nổi bật',body:'Tượng Phật Thích Ca cao 7m. Đặc biệt là Tượng Phật Nhập Niết Bàn dài 17m — một trong những tượng lớn nhất vùng.'},
+        {title:'🌸 Không gian thiên nhiên',body:'Ao lớn ở trung tâm, du khách có thể cho cá ăn. Có núi nhân tạo, thác nước, hồ sen, võng nghỉ ngơi tạo không gian thư giãn tuyệt vời.'},
+        {title:'❤️ Hoạt động từ thiện',body:'Cơ sở chữa bệnh miễn phí, hỗ trợ bệnh nhân nghèo, trẻ mồ côi và xây nhà tình thương. Miễn phí vào cửa, giữ xe và cho mượn nón lá.'},
+      ], tip:'✅ Miễn phí hoàn toàn: vào cửa, giữ xe, mượn nón lá. Mang theo ít tiền để cúng dường hoặc mua đặc sản.' },
+    { id:'som-rong', tag:'240 Năm Lịch Sử', title:'Chùa Som Rong', subtitle:'Xây dựng 1785 · 12 đời trụ trì · 5 ha', bg:'url("chua-som-rong1.jpg") center/cover no-repeat',
+      imgs:['chua-som-rong2.mp4','chua-som-rong3.jpg'],
+      desc:'Chùa Bôtum Vong Sa Som Rong xây dựng năm 1785, trải qua 12 đời trụ trì. Diện tích 5 ha với nhiều công trình ấn tượng, đặc biệt là tượng Phật Niết Bàn ngoài trời dài 63m.',
+      sections:[
+        {title:'🏛️ Kiến trúc',body:'Cổng chùa trang trí hoa văn rắn thần Naga, chim thần Krud. Trong chánh điện có nhiều tượng Phật, đặc biệt hai tượng cổ từ năm 1785.'},
+        {title:'🗿 Tượng Phật khổng lồ',body:'Tượng Phật Thích Ca Nhập Niết Bàn ngoài trời dài 63m, cao 22,5m. Bảo tháp 4 hướng tượng trưng Từ – Bi – Hỷ – Xả.'},
+        {title:'🍜 Ẩm thực quanh chùa',body:'Bánh cống nóng giòn, bún nước lèo đậm đà, cà ri gà/bò truyền thống và bánh ống dân dã không thể bỏ lỡ.'},
+      ], tip:'🌅 Đến sáng sớm khi chùa yên tĩnh và ánh sáng đẹp. Mặc trang phục lịch sự, kín đáo khi vào chùa.' },
+    { id:'cho-noi', tag:'Văn Hóa Sông Nước', title:'Chợ Nổi Ngã Năm', subtitle:'Từ thời Pháp thuộc · Họp từ 4h sáng', bg:'url("cho-noi-nga-5-3.jpg") center/cover no-repeat',
+      imgs:['cho-noi-nga-5-2.jpg','cho-noi-nga-5-1.mp4'],
+      desc:'Chợ nổi Ngã Năm nằm tại giao điểm 5 nhánh sông, hình thành từ thời kênh đào Quản Lộ – Phụng Hiệp. Trung tâm giao thương nông sản và điểm du lịch đặc trưng của Sóc Trăng.',
+      sections:[
+        {title:'⛵ Văn hóa mua bán',body:'Ghe treo hàng trên cây sào dài để giới thiệu sản phẩm — cách quảng cáo độc đáo chỉ có ở chợ nổi miền Tây. Nông sản tươi từ khắp các vùng.'},
+        {title:'🍜 Ăn sáng trên ghe',body:'Bún nước lèo, hủ tiếu, cơm tấm, cà phê... ăn ngay trên ghe giữa sông — trải nghiệm ẩm thực độc đáo không nơi nào có được.'},
+        {title:'🎊 Dịp đặc biệt',body:'Dịp Tết Nguyên Đán, số lượng ghe lên đến 400 chiếc, tạo nên khung cảnh nhộn nhịp và rực rỡ nhất trong năm.'},
+      ], tip:'⏰ Đến lúc 5–6h sáng để trải nghiệm chợ đông vui nhất. Mang tiền mặt. Sau 9h sáng chợ tan gần hết.' },
+    { id:'lien-hoa', tag:'Mới Khánh Thành 2026', title:'Liên Hoa Bảo Tháp', subtitle:'Khánh thành 28/01/2026 · Cao 68m · Đường kính 99m', bg:'url("tan-hue-vien1.jpg") center/cover no-repeat',
+      imgs:['tan-hue-vien2.mp4','tan-hue-vien3.jpg'],
+      desc:'Liên Hoa Bảo Tháp tại Tân Huê Viên vừa khánh thành 28/01/2026. Tháp hoa sen 3 tầng cao 68m là điểm đến tâm linh và văn hóa mới nhất của Sóc Trăng.',
+      sections:[
+        {title:'🏯 Kiến trúc',body:'Thiết kế hình hoa sen — quốc hoa Việt Nam. 3 tầng, cao 68m, đường kính 99m, diện tích hơn 42.000 m². Biểu tượng mới của tỉnh Sóc Trăng.'},
+        {title:'🪷 Tượng Phật Dược Sư',body:'Tượng đồng đỏ dát vàng cao 6,8m, xoay 4 phương 8 hướng theo chu kỳ 365 ngày, cầu bình an cho mọi người.'},
+        {title:'🥮 Tân Huê Viên',body:'Khu du lịch 4ha của thương hiệu bánh pía từ 1985. Đang phát triển thêm phố đi bộ, thủy cung, khu biểu diễn nghệ thuật.'},
+      ], tip:'✨ Buổi chiều và tối đẹp nhất — ánh đèn làm tháp lung linh huyền ảo. Điểm check-in hot nhất Sóc Trăng 2026!' },
+  ],
+  culture: [
+    { id:'ok-om-bok', emoji:'🌕', tag:'Lễ Hội Lớn Nhất', title:'Lễ Hội Ok Om Bok', subtitle:'Tháng 10 âm lịch hàng năm', bg:'linear-gradient(135deg,#1B4D35,#2E7D52)',
+      imgs:['https://source.unsplash.com/600x400/?khmer+moon+festival','https://source.unsplash.com/600x400/?cambodian+ceremony+offering'],
+      desc:'Ok Om Bok là lễ hội lớn nhất của người Khmer, còn gọi là Lễ Cúng Trăng. Người Khmer bày tỏ lòng biết ơn với Mặt Trăng — vị thần điều tiết mùa màng trong tín ngưỡng dân gian.',
+      sections:[
+        {title:'🌕 Ý nghĩa',body:'Lễ cúng diễn ra đêm rằm tháng 10 âm lịch, tạ ơn thần Mặt Trăng và cầu mong vụ mùa bội thu. Đây là lễ hội văn hóa quan trọng nhất của người Khmer Nam Bộ.'},
+        {title:'🚣 Đua ghe Ngo',body:'Hoạt động đặc sắc nhất là đua ghe Ngo trên sông Maspero. Mỗi ghe dài 22-24m, chở 40-60 tay chèo, tạo không khí lễ hội hào hứng, náo nhiệt.'},
+        {title:'🍚 Nghi thức cúng',body:'Lễ vật gồm cốm dẹp, dừa, khoai lang, chuối... Trẻ em được người lớn bón cốm và hỏi điều ước — nghi thức độc đáo và ý nghĩa.'},
+      ], tip:'🎊 Đến Sóc Trăng vào tháng 10 âm lịch để tham dự trực tiếp — trải nghiệm văn hóa độc đáo không thể quên.' },
+    { id:'dua-ghe-ngo', emoji:'🚣', tag:'Thể Thao Truyền Thống', title:'Đua Ghe Ngo', subtitle:'Tháng 10 âm lịch · Sông Maspero', bg:'linear-gradient(135deg,#0A3050,#1A70C0)',
+      imgs:['https://source.unsplash.com/600x400/?traditional+boat+race+asia','https://source.unsplash.com/600x400/?dragon+boat+festival+river'],
+      desc:'Đua ghe Ngo là môn thể thao truyền thống gắn với lễ hội Ok Om Bok. Sự kiện thể thao – văn hóa lớn nhất trong năm, thu hút hàng vạn người dân và du khách.',
+      sections:[
+        {title:'⛵ Chiếc ghe Ngo',body:'Ghe dài 22-24m, đẽo từ thân cây lớn, trang trí hoa văn rực rỡ. Mỗi ghe chở 40-60 tay chèo, có người ngồi đầu giữ nhịp và người cầm lái.'},
+        {title:'🏆 Cuộc đua',body:'Các đội từ nhiều chùa Khmer khắp tỉnh và tỉnh lân cận. Tiếng trống, tiếng hò reo vang dội tạo không khí lễ hội sôi động chưa từng thấy.'},
+        {title:'🎭 Ý nghĩa văn hóa',body:'Không chỉ là cuộc thi sức mạnh mà còn là dịp người Khmer giao lưu, thể hiện tinh thần đoàn kết và gìn giữ bản sắc văn hóa dân tộc.'},
+      ], tip:'📍 Tổ chức tại sông Maspero, TP. Sóc Trăng. Đến sớm để có vị trí đẹp. Không khí rất sôi động và đặc sắc!' },
+    { id:'chol-chnam-thmay', emoji:'🎊', tag:'Tết Khmer', title:'Tết Chol Chnam Thmay', subtitle:'Tháng 4 dương lịch · Năm mới Khmer', bg:'linear-gradient(135deg,#8B2020,#C0392B)',
+      imgs:['https://source.unsplash.com/600x400/?khmer+new+year+festival','https://source.unsplash.com/600x400/?cambodian+traditional+dance+costume'],
+      desc:'Chol Chnam Thmay là Tết năm mới của người Khmer, diễn ra tháng 4 dương lịch. Lễ hội quan trọng nhất trong năm, kéo dài 3 ngày với nhiều nghi lễ và hoạt động đặc sắc.',
+      sections:[
+        {title:'🏛️ Nghi lễ tại chùa',body:'Người dân đến chùa tắm Phật, dâng cơm cho sư, nghe thuyết pháp. Các ngôi chùa Khmer được trang hoàng rực rỡ trong dịp này.'},
+        {title:'🎭 Hoạt động',body:'Múa Apsara, biểu diễn nhạc ngũ âm, các trò chơi dân gian. Người dân mặc trang phục truyền thống Khmer đầy màu sắc.'},
+        {title:'👨‍👩‍👧‍👦 Ý nghĩa',body:'Dịp con cháu về thăm gia đình, thể hiện lòng hiếu kính. Cộng đồng cùng ăn mừng năm mới và cầu nguyện bình an, thịnh vượng.'},
+      ], tip:'🌸 Tháng 4 là thời điểm tuyệt vời để tìm hiểu văn hóa Khmer — không khí lễ hội rộn ràng và người dân rất thân thiện!' },
+    { id:'van-hoa-hoa', emoji:'🏮', tag:'Văn Hóa Người Hoa', title:'Văn Hóa Người Hoa', subtitle:'Di sản cộng đồng Hoa kiều · Phố Hoa Sóc Trăng', bg:'linear-gradient(135deg,#8B1A1A,#D4380A)',
+      imgs:['https://source.unsplash.com/600x400/?chinese+lantern+festival+asia','https://source.unsplash.com/600x400/?chinese+temple+vietnam'],
+      desc:'Cộng đồng người Hoa tại Sóc Trăng có lịch sử hơn 300 năm, góp phần tạo nên bản sắc văn hóa độc đáo của vùng đất này. Phố Hoa với những ngôi chùa cổ, tiệm thuốc bắc và đặc sản ẩm thực là điểm tham quan không thể bỏ qua.',
+      sections:[
+        {title:'🏮 Phố Hoa & Kiến trúc',body:'Khu phố người Hoa tập trung ở trung tâm thành phố Sóc Trăng, với những ngôi nhà cổ, miếu thờ và đèn lồng đỏ đặc trưng. Chùa Bà Thiên Hậu và Chùa Ông là hai di tích tiêu biểu của cộng đồng.'},
+        {title:'🎊 Lễ Tết Nguyên Đán',body:'Tết Nguyên Đán của người Hoa được tổ chức rực rỡ nhất tại Phố Hoa với múa lân sư rồng, pháo hoa và các nghi lễ truyền thống. Không khí lễ hội kéo dài suốt 15 ngày đầu năm âm lịch.'},
+        {title:'🍜 Ẩm thực đặc trưng',body:'Người Hoa đã mang đến Sóc Trăng những món ăn đặc sắc như lạp xưởng, bánh Pía, hủ tiếu… trở thành những đặc sản nổi tiếng nhất tỉnh được lưu truyền qua nhiều thế hệ.'},
+      ], tip:'🏮 Ghé thăm Phố Hoa vào dịp Tết Nguyên Đán để trải nghiệm không khí lễ hội rực rỡ và mua sắm đặc sản người Hoa!' },
+  ],
+  food: [
+    { id:'banh-pia', emoji:'🥮', tag:'Di Sản Quốc Gia', title:'Bánh Pía', subtitle:'Di sản văn hóa phi vật thể · Thương hiệu Tân Huê Viên', bg:'linear-gradient(135deg,#8B6914,#DAA520)',
+      imgs:['https://source.unsplash.com/600x400/?mooncake+pastry+traditional','https://source.unsplash.com/600x400/?vietnamese+bakery+pastry'],
+      desc:'Bánh Pía là đặc sản nổi tiếng nhất Sóc Trăng, được công nhận di sản văn hóa phi vật thể quốc gia. Nghề làm bánh thủ công truyền thống tại Vũng Thơm được coi là "thủ phủ bánh Pía miền Tây".',
+      sections:[
+        {title:'🥮 Đặc điểm',body:'Vỏ nhiều lớp xốp mềm, nhân đa dạng: đậu xanh, khoai môn, sầu riêng, lá dứa... Hương thơm đặc trưng và vị béo ngọt hài hòa là thương hiệu riêng biệt.'},
+        {title:'🏭 Tân Huê Viên',body:'Thành lập năm 1985, là thương hiệu bánh Pía lớn nhất tỉnh. Sau 40 năm đã hiện đại hóa sản xuất và xuất khẩu đi nhiều nơi trên thế giới.'},
+        {title:'🎁 Mua về làm quà',body:'Bánh Pía là món quà được yêu thích nhất khi đến Sóc Trăng. Hộp quà đóng gói đẹp, bảo quản lâu, nhiều vị để lựa chọn.'},
+      ], tip:'🛍️ Mua tại Tân Huê Viên (xã An Hiệp, huyện Châu Thành). Hỏi ngày sản xuất để chắc bánh tươi ngon nhất!' },
+    { id:'bun-nuoc-leo', emoji:'🍜', tag:'Tinh Hoa Khmer–Kinh', title:'Bún Nước Lèo', subtitle:'Đặc sản số 1 của Sóc Trăng', bg:'linear-gradient(135deg,#1B4D35,#2E7D52)',
+      imgs:['https://source.unsplash.com/600x400/?vietnamese+noodle+soup+bowl','https://source.unsplash.com/600x400/?fresh+herbs+vietnamese+food'],
+      desc:'Bún nước lèo Sóc Trăng là tinh hoa ẩm thực Khmer–Kinh. Nước dùng từ mắm và cá lóc tươi tạo hương vị đậm đà đặc trưng không nơi nào có được.',
+      sections:[
+        {title:'🍜 Chế biến',body:'Nước lèo nấu từ mắm bò hóc hoặc mắm ruốc, kết hợp cá lóc tươi. Ăn kèm rau sống, giá đỗ, bắp chuối thái mỏng và tép rang.'},
+        {title:'🌿 Rau ăn kèm',body:'Đĩa rau sống phong phú: xà lách, húng cây, rau muống, bắp chuối... Sự kết hợp nước dùng đậm và rau tươi mát tạo vị ngon hoàn hảo.'},
+        {title:'📍 Thưởng thức',body:'Ăn tại quán ven đường, chợ địa phương hoặc đặc biệt trên ghe tại Chợ Nổi Ngã Năm vào buổi sáng sớm — trải nghiệm độc đáo nhất.'},
+      ], tip:'🌅 Ăn bún nước lèo trên ghe tại Chợ Nổi Ngã Năm lúc 5–6h sáng — trải nghiệm ẩm thực không thể nào quên!' },
+    { id:'lap-xuong', emoji:'🌭', tag:'Di Sản Người Hoa', title:'Lạp Xưởng Sóc Trăng', subtitle:'Đặc sản truyền thống của người Hoa', bg:'linear-gradient(135deg,#8B2020,#C0392B)',
+      imgs:['https://source.unsplash.com/600x400/?chinese+sausage+dried+meat','https://source.unsplash.com/600x400/?traditional+cured+sausage+food'],
+      desc:'Lạp xưởng Sóc Trăng là đặc sản chế biến theo công thức truyền thống của cộng đồng người Hoa. Màu đỏ hấp dẫn, hương thơm đặc trưng, là món quà được nhiều du khách ưa chuộng.',
+      sections:[
+        {title:'🔴 Đặc điểm',body:'Màu đỏ đẹp mắt, vị ngọt đậm đà hòa quyện gia vị người Hoa. Thịt heo chọn lọc kỹ, ướp đúng tỷ lệ và phơi khô tự nhiên.'},
+        {title:'🍳 Cách dùng',body:'Hấp chín ăn với cơm trắng hoặc xào với rau củ. Bảo quản nơi khô ráo, mua hút chân không để mang đi xa làm quà.'},
+        {title:'🏪 Nơi mua',body:'Bán tại chợ địa phương, cửa hàng đặc sản và khu Phố Hoa — nơi cộng đồng người Hoa sinh sống tập trung trong thành phố.'},
+      ], tip:'🛍️ Mua lạp xưởng hút chân không để bảo quản lâu hơn. Chọn loại màu đỏ tươi, căng đều và mùi thơm đặc trưng là ngon nhất!' },
+    { id:'banh-cong', emoji:'🧆', tag:'Món Đường Phố', title:'Bánh Cống', subtitle:'Đặc sản đường phố của Sóc Trăng', bg:'linear-gradient(135deg,#8B6914,#D4A010)',
+      imgs:['https://source.unsplash.com/600x400/?vietnamese+fried+snack+street+food','https://source.unsplash.com/600x400/?crispy+fritter+shrimp+asian'],
+      desc:'Bánh Cống là món ăn đường phố nổi tiếng của Sóc Trăng, được người Khmer sáng tạo. Tên gọi xuất phát từ khuôn chiên hình trụ giống cái cống.',
+      sections:[
+        {title:'🧆 Nguyên liệu',body:'Vỏ bột gạo và đậu nành, nhân tép tươi, thịt heo băm và đậu xanh. Chiên ngập dầu vàng giòn bên ngoài, nhân mềm thơm bên trong.'},
+        {title:'🌿 Cách ăn',body:'Cuốn trong lá xà lách tươi cùng rau thơm, chấm nước mắm chua ngọt tỏi ớt — hương vị hài hòa và thú vị.'},
+        {title:'📍 Thưởng thức',body:'Bán tại xe đẩy và quán vỉa hè quanh khu vực Chùa Som Rong và chợ trung tâm. Ăn nóng ngay sau khi chiên mới thực sự cảm nhận được độ giòn.'},
+      ], tip:'🔥 Ăn khi vừa chiên ra, còn nóng hổi mới cảm nhận được độ giòn và thơm đặc trưng. Đừng để nguội!' },
+    { id:'bun-goi-da', emoji:'🥗', tag:'Đặc Sản Sông Nước', title:'Bún Gỏi Dà', subtitle:'Món bún đặc sắc và tươi mát', bg:'linear-gradient(135deg,#0A5530,#1A8050)',
+      imgs:['https://source.unsplash.com/600x400/?vietnamese+noodle+salad+fresh','https://source.unsplash.com/600x400/?vietnamese+fresh+spring+roll+herbs'],
+      desc:'Bún Gỏi Dà là món ăn đặc trưng Sóc Trăng, kết hợp bún tươi, rau sống và nước chấm chua ngọt. Tên "gỏi dà" có nghĩa là "gỏi đu đủ" trong tiếng Khmer.',
+      sections:[
+        {title:'🥗 Nguyên liệu',body:'Bún tươi kèm tép luộc, thịt heo, đậu hũ chiên, đu đủ bào sợi, giá đỗ, rau thơm. Nước chấm chua ngọt với tỏi ớt là linh hồn của món ăn.'},
+        {title:'🌿 Hương vị',body:'Vị chua ngọt hòa quyện với độ giòn đu đủ xanh, vị thơm tép luộc và rau sống tươi mát tạo tổng thể cân bằng và lạ miệng.'},
+        {title:'📍 Thưởng thức',body:'Bán vào buổi sáng và trưa tại chợ địa phương và quán ven đường. Bữa sáng phổ biến và yêu thích nhất của người dân Sóc Trăng.'},
+      ], tip:'🌅 Ăn buổi sáng tại chợ địa phương để được thưởng thức tươi ngon nhất và cảm nhận đời sống bình dị nơi đây.' },
+    { id:'so-ri', emoji:'🍒', tag:'Đặc Sản Tươi', title:'Trái Sơ Ri', subtitle:'Trái cây đặc sản gần Chùa Dơi', bg:'linear-gradient(135deg,#8B0000,#C0392B)',
+      imgs:['https://source.unsplash.com/600x400/?acerola+cherry+red+fruit','https://source.unsplash.com/600x400/?tropical+red+berry+fresh'],
+      desc:'Trái Sơ Ri (cherry Acerola) là đặc sản nổi tiếng của Sóc Trăng. Trái nhỏ đỏ tươi, vị chua ngọt đặc trưng và hàm lượng vitamin C cực kỳ cao — gấp 30-40 lần so với cam.',
+      sections:[
+        {title:'🍒 Đặc điểm',body:'Trái nhỏ bằng đầu ngón tay, vỏ đỏ bóng khi chín, thịt mềm mọng nước. Vị chua ngọt hài hòa, thơm nhẹ. Vitamin C cao gấp 30-40 lần cam.'},
+        {title:'🌿 Cách dùng',body:'Ăn tươi, làm sinh tố, mứt, rượu ngâm hoặc phơi khô. Trái tươi chỉ bảo quản 1-2 ngày nên ăn liền hoặc làm mứt khi mang về.'},
+        {title:'📍 Nơi mua',body:'Bán nhiều tại xe đẩy ven đường quanh Chùa Dơi. Mùa sơ ri từ tháng 3-8 là thời điểm trái ngon và nhiều nhất trong năm.'},
+      ], tip:'🛍️ Mua mứt sơ ri hoặc sơ ri sấy khô để mang về. Thử sinh tố sơ ri tươi ngay tại chỗ — ngon và mát lạnh!' },
+  ]
+};
+
+// ─── MODAL ───────────────────────────────────────────
+function openModal(type, id) {
+  const item = data[type].find(i => i.id === id);
+  if (!item) return;
+  document.getElementById('modalEmoji').textContent = item.emoji;
+  document.getElementById('modalHero').style.background = item.bg;
+  document.getElementById('modalTag').textContent = item.tag;
+  document.getElementById('modalTitle').textContent = item.title;
+  document.getElementById('modalSubtitle').textContent = item.subtitle;
+  document.getElementById('modalDesc').textContent = item.desc;
+  document.getElementById('modalTip').textContent = item.tip;
+  document.getElementById('modalSections').innerHTML = item.sections.map(s =>
+    `<div class="modal-section"><div class="modal-section-title">${s.title}</div><div class="modal-section-body">${s.body}</div></div>`
+  ).join('');
+  document.getElementById('modalImgs').innerHTML = item.imgs.map((q, i) => {
+
+  if(q.endsWith(".mp4")){
+    return `
+    <div class="modal-img-wrap">
+      <video autoplay loop controls style="width:100%;height:100%;object-fit:cover;">
+        <source src="${q}" type="video/mp4">
+      </video>
+    </div>`;
+  }
+
+  return `
+  <div class="modal-img-wrap">
+    <img src="${q}"
+      alt=""
+      loading="lazy"
+      style="width:100%;height:100%;object-fit:cover;">
+  </div>`;
+
+}).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  stopVideos();
+}
+function closeModalOnBg(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function stopVideos(){
+  document.querySelectorAll("video").forEach(v=>{
+    v.pause();
+    v.currentTime = 0;
+  });
+}
+</script>
+</body>
+</html>
